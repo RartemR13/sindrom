@@ -17,9 +17,11 @@ public:
     void Save(const std::string&);
     std::vector<RGBquad>& operator[] (std::size_t);
 
-private:
+protected:
     std::vector<std::vector<RGBquad>> storage_;
 
     std::uint32_t XPelsPerMeter_;
     std::uint32_t YPelsPerMeter_;
 };
+
+bool operator== (const RGBquad& lhs, const RGBquad& rhs);

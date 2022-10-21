@@ -91,3 +91,24 @@ Picture::Picture(const std::string& file_path) {
 std::vector<RGBquad>& Picture::operator[] (std::size_t row_number) {
     return storage_[row_number];
 }
+
+bool operator== (const RGBquad& lhs, const RGBquad& rhs) {
+    return lhs.Value() == 
+           rhs.Value();
+}
+
+std::uint32_t RGBquad::Value() const {
+    std::uint32_t ret = *reinterpret_cast<const std::uint32_t*>(this);
+    return ret;
+}
+
+RGBquad::RGBquad(std::uint32_t val) {
+    *reinterpret_cast<std::uint32_t*>(this) = val;
+}
+
+RGBquad::RGBquad(std::uint8_t b, std::uint8_t g, std::uint8_t r, std::uint8_t a) {
+    rgbBlue = b;
+    rgbGreen = g;
+    rgbRed = r;
+    rgbReserved = a;
+}

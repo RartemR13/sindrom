@@ -1,8 +1,12 @@
 #include <iostream>
 
-#include "Picture/Picture.hpp"
+#include "SindromPicture/SindromPicture.hpp"
 
 int main() {
-    Picture kaneki("kaneki.bmp");
+    SindromPicture kaneki("kaneki.bmp");
+
+    kaneki.ReplaceColor({0xFF, 0xFF, 0xFF, 0x00}, {0x00, 0xFF, 0x00, 0x00});
+    //kaneki.Negative();
+
     kaneki.Save("sosi.bmp");
 }

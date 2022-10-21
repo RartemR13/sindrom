@@ -8,6 +8,10 @@ add_subdirectory(src/Picture)
 target_link_libraries(sindrom Picture)
 target_include_directories(sindrom PUBLIC src/Picture)
 
+add_subdirectory(src/SindromPicture)
+target_link_libraries(sindrom SindromPicture)
+target_include_directories(sindrom PUBLIC src/SindromPicture)
+
 add_custom_command(
     TARGET sindrom
     COMMAND ${CMAKE_COMMAND} -E copy
