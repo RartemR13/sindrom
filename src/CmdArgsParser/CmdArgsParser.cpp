@@ -14,6 +14,10 @@ CmdArgsParser::CmdArgsParser(int argc, char* argv[]) {
                 parsed_commands_.push_back(Command::NEGATIVE);
             } else if (cur_command == "-replace_color") {
                 parsed_commands_.push_back(Command::REPLACE_COLOR);
+            } else if (cur_command == "-load") {
+                parsed_commands_.push_back(Command::LOAD);
+            } else if (cur_command == "-save") {
+                parsed_commands_.push_back(Command::SAVE);                
             } else {
                 throw std::invalid_argument("incorrect command name: " + cur_command);
             }

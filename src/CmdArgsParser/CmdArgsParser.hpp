@@ -6,6 +6,8 @@
 class CmdArgsParser {
 public:
     enum class Command {
+        LOAD,
+        SAVE,
         NEGATIVE,
         REPLACE_COLOR
     };
