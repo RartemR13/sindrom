@@ -2,16 +2,44 @@
 
 #include <vector>
 #include <string>
+#include <tuple>
+#include <map>
+
+//---------------------------------------------------
+enum class Command {
+    LOAD,
+    SAVE,
+    NEGATIVE,
+    REPLACE_COLOR,
+    EXIT
+};
+
+const std::size_t CommandArgsCount[] =
+{
+    //LOAD = 
+        1,
+    //SAVE = 
+        1,
+    //NEGATIVE = 
+        0,
+    //REPLACE_COLOR = 
+        8,
+    //EXIT = 
+        0
+};
+
+const std::map<std::string, Command> COMMANDS_MAP{
+    {"load", Command::LOAD},
+    {"save", Command::SAVE},
+    {"negative", Command::NEGATIVE},
+    {"replace_color", Command::REPLACE_COLOR},
+    {"exit", Command::EXIT}
+};
+std::tuple<Command, std::string> Parse(std::string, std::string = "");
+//---------------------------------------------------
 
 class CmdArgsParser {
 public:
-    enum class Command {
-        LOAD,
-        SAVE,
-        NEGATIVE,
-        REPLACE_COLOR
-    };
-
     CmdArgsParser(int argc, char* argv[]);
     const std::vector<Command>& GetParsedCommands() const;
     const std::vector<std::string> GetParsedArgs(std::size_t count);

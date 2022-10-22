@@ -16,6 +16,10 @@ add_subdirectory(src/CmdArgsParser)
 target_link_libraries(sindrom CmdArgsParser)
 target_include_directories(sindrom PUBLIC src/CmdArgsParser)
 
+add_subdirectory(src/Executer)
+target_link_libraries(sindrom Executer)
+target_include_directories(sindrom PUBLIC src/Executer)
+
 add_custom_command(
     TARGET sindrom
     COMMAND ${CMAKE_COMMAND} -E copy

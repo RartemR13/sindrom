@@ -97,6 +97,20 @@ bool operator== (const RGBquad& lhs, const RGBquad& rhs) {
            rhs.Value();
 }
 
+#include <iostream>
+
+std::istream& operator>>(std::istream& in, RGBquad& to_read) {
+    int r, g, b, a;
+    in >> r >> g >> b >> a;
+
+    to_read.rgbBlue = b;
+    to_read.rgbGreen = g;
+    to_read.rgbRed = r;
+    to_read.rgbReserved = a;
+
+    return in;
+}
+
 std::uint32_t RGBquad::Value() const {
     std::uint32_t ret = *reinterpret_cast<const std::uint32_t*>(this);
     return ret;

@@ -18,3 +18,6 @@ struct RGBquad {
 } __attribute__((__packed__));
 
 typedef std::vector<RGBquad> Palette;
+
+bool operator== (const RGBquad& lhs, const RGBquad& rhs);
+std::istream& operator>>(std::istream& in, RGBquad& to_read);
