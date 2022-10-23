@@ -5,8 +5,9 @@
 #include <string>
 
 #include "../BMPHelpers/BMPHelpers.hpp"
+#include "../Matrix/Matrix.hpp"
 
-class Picture {
+class Picture : public Matrix<RGBquad> {
 public:
     Picture() = delete;
     Picture(const Picture&) = default;
@@ -15,13 +16,8 @@ public:
 
     void Load(const std::string&);
     void Save(const std::string&);
-    std::vector<RGBquad>& operator[] (std::size_t);
 
 protected:
-    std::vector<std::vector<RGBquad>> storage_;
-
     std::uint32_t XPelsPerMeter_;
     std::uint32_t YPelsPerMeter_;
 };
-
-bool operator== (const RGBquad& lhs, const RGBquad& rhs);

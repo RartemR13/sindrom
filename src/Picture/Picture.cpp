@@ -1,6 +1,7 @@
 #include "Picture.hpp"
 
 #include <fstream>
+#include <iostream>
 
 void Picture::Load(const std::string& file_path) {
     std::ifstream file_input(file_path, std::ios::binary);
@@ -88,16 +89,10 @@ Picture::Picture(const std::string& file_path) {
     Load(file_path);
 }
 
-std::vector<RGBquad>& Picture::operator[] (std::size_t row_number) {
-    return storage_[row_number];
-}
-
 bool operator== (const RGBquad& lhs, const RGBquad& rhs) {
     return lhs.Value() == 
            rhs.Value();
 }
-
-#include <iostream>
 
 std::istream& operator>>(std::istream& in, RGBquad& to_read) {
     int r, g, b, a;
