@@ -9,8 +9,10 @@ public:
     Matrix() = default;
     Matrix(const Matrix& to_copy) = default;
     Matrix(const Matrix& to_copy, std::size_t x, std::size_t y, std::size_t dx, std::size_t dy) {storage_ = to_copy.Cut(x, y, dx, dy).GetStorage();}
-    Matrix(const std::vector<std::vector<T>>& from) { storage_ = from.GetStorage();}
+    Matrix(const std::vector<std::vector<T>>& from) { storage_ = from;}
     ~Matrix() = default;
+
+    void SetStorage(const std::vector<std::vector<T>>& from) {storage_ = from;};
 
     std::vector<T>& operator[] (std::size_t row_number) {return storage_[row_number];}
     const std::vector<T>& operator[] (std::size_t row_number) const {return storage_[row_number];}
@@ -36,7 +38,7 @@ public:
 
         std::vector<std::vector<T>> res(dy);
         for (std::size_t i = y; i < y + dy; ++i) {
-            insert(res[i - y].begin(), storage_[y].begin() + x, storage_[y].begin() + x + dx);
+            res[i - y].insert(res[i - y].begin(), storage_[y].begin() + x, storage_[y].begin() + x + dx);
         }
 
         return Matrix<T>(res);

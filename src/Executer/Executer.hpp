@@ -16,6 +16,7 @@ private:
     void ReplaceColor(std::string);
     void Load(std::string);
     void Save(std::string);
+    void Cut(std::string);
 
 
     CmdArgsParser& args_parser_;

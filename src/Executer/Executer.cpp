@@ -60,6 +60,9 @@ void Executer::Execute(Command command, std::string args_line) {
     case Command::NEGATIVE:
         Negative();
         break;
+    case Command::CUT:
+        Cut(args_line);
+        break;
     case Command::EXIT:
         break;
     }
@@ -102,4 +105,18 @@ void Executer::Save(std::string args_line) {
     }
 
     picture_->Save(args_line);
+}
+
+void Executer::Cut(std::string args_line) {
+    if (!picture_) {
+        throw std::runtime_error("Image was not load");
+    }
+
+    std::size_t x, y, dx, dy;
+    std::stringstream args(args_line);
+    if (!(args >> x >> y >> dx >> dy)) {
+        throw std::invalid_argument("Bad args, Cut");
+    }
+
+    picture_->SetStorage(picture_->Cut(x, y, dx, dy).GetStorage());
 }
