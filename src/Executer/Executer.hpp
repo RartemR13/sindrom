@@ -18,6 +18,7 @@ private:
     void Save(std::string);
     void Cut(std::string);
     void Scale(std::string);
+    void ImpoveDefinition();
 
 
     CmdArgsParser& args_parser_;

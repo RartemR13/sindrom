@@ -19,6 +19,7 @@ public:
     void ScaleY(std::size_t);
 
     void Scale(std::size_t, std::size_t);
+    void ImproveDefinition();
 
     void AddBoards();
     void RemBoards();

@@ -8,7 +8,15 @@ template<typename T>
 class Matrix {
 public:
     Matrix() = default;
-    Matrix(const Matrix& to_copy) = default;
+    template<typename T_copy>
+    Matrix(const Matrix<T_copy>& to_copy) {
+        storage_ = std::vector<std::vector<T>>(to_copy.SizeY(), std::vector<T>(to_copy.SizeX()));
+        for (std::size_t i = 0; i < SizeY(); ++i) {
+            for (std::size_t j = 0; j < SizeX(); ++j) {
+                storage_[i][j] = static_cast<T>(to_copy[i][j]);
+            }
+        }
+    }
     Matrix(const Matrix& to_copy, std::size_t x, std::size_t y, std::size_t dx, std::size_t dy) {storage_ = to_copy.Cut(x, y, dx, dy).GetStorage();}
     Matrix(const std::vector<std::vector<T>>& from) { storage_ = from;}
     ~Matrix() = default;

@@ -68,6 +68,9 @@ void Executer::Execute(Command command, std::string args_line) {
     case Command::SCALE:
         Scale(args_line);
         break;
+    case Command::IMPROVE_DEFINITION:
+        ImpoveDefinition();
+        break;
     }
 }
 
@@ -136,4 +139,12 @@ void Executer::Scale(std::string args_line) {
     }
 
     picture_->Scale(new_x, new_y);
+}
+
+void Executer::ImpoveDefinition() {
+    if (!picture_) {
+        throw std::runtime_error("Image was not load");
+    }
+
+    picture_->ImproveDefinition();
 }
