@@ -82,41 +82,9 @@ void SindromPicture::ScaleX(std::size_t new_x) {
 }
 
 void SindromPicture::ScaleY(std::size_t new_y) {
-    if (new_y == 0) {
-        throw std::invalid_argument("new_y == 0");
-    }
-
-    if (new_y < SizeY()) {
-        std::size_t need_delete = SizeY() - new_y;
-        std::size_t delta = SizeY() / need_delete;
-        std::size_t mod = SizeY() % need_delete;
-        std::size_t mod_delta = need_delete / mod + (need_delete % mod * 2 > mod);
-        std::size_t cur_number_del = SizeY() - 1;
-
-
-        std::cerr << mod_delta << std::endl;
-
-        for (std::size_t i = 0; i < need_delete; ++i) {
-            DeleteRow(cur_number_del);
-
-            cur_number_del -= delta;
-            if (mod > 0 && i % mod_delta == 0) {
-                cur_number_del--;
-                mod--;
-            }
-        }
-    } else {
-        while (SizeY() < new_y) {
-            std::size_t need_to_add = (new_y - SizeY() > SizeY() ? SizeY() : new_y - SizeY());
-            std::size_t delta = SizeY() / need_to_add;
-            std::size_t cur_add_pos = SizeY();
-
-            for (std::size_t i = 0; i < need_to_add; ++i) {
-                PasteRow(cur_add_pos - 1, cur_add_pos);
-                cur_add_pos -= delta;
-            }
-        }
-    }
+    Transposition();
+    ScaleX(new_y);
+    Transposition();
 }
 
 void SindromPicture::Scale(std::size_t new_x, std::size_t new_y) {
