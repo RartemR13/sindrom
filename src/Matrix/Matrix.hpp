@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <stdexcept>
+#include <iostream>
 
 template<typename T>
 class Matrix {
@@ -45,6 +46,49 @@ public:
     }
 
     const std::vector<std::vector<T>>& GetStorage() const {return storage_;}
+
+    void Transposition() {
+        auto new_storage = std::vector<std::vector<T>>(SizeX(), std::vector<T>(SizeY()));
+        for (std::size_t i = 0; i < SizeY(); ++i) {
+            for (std::size_t j = 0; j < SizeX(); ++j) {
+                new_storage[j][i] = storage_[i][j];
+            }
+        }
+
+        storage_ = new_storage;
+    }
+
+    void PasteRow(std::size_t row_number_copy, std::size_t row_number_paste) {
+        if (row_number_copy >= SizeY()) {
+            throw std::invalid_argument("row_number_copy >= SizeY()");
+        }
+
+        if (row_number_paste > SizeY()) {
+            throw std::invalid_argument("row_number_paste > SizeY()");
+        }
+
+        storage_.insert(storage_.begin() + row_number_paste, *(storage_.begin() + row_number_copy));
+    }
+
+    void PasteColumn(std::size_t column_number_copy, std::size_t column_number_paste) {
+        Transposition();
+        PasteRow(column_number_copy, column_number_paste);
+        Transposition();
+    }
+
+    void DeleteRow(std::size_t row_number) {
+        if (row_number >= SizeY()) {
+            throw std::invalid_argument("row_number >= SizeY()");
+        }
+
+        storage_.erase(storage_.begin() + row_number);
+    }
+
+    void DeleteColumn(std::size_t column_number) {
+        Transposition();
+        DeleteRow(column_number);
+        Transposition();
+    }
 
     template<typename Tf>
     friend Matrix<Tf> CoefMult(const Matrix<Tf>& lhs, const Matrix<Tf>& rhs);

@@ -15,7 +15,11 @@ public:
     void ReplaceColor(RGBquad, RGBquad);
     void Negative();
 
-private:
+    void ScaleX(std::size_t);
+    void ScaleY(std::size_t);
+
+    void Scale(std::size_t, std::size_t);
+
     void AddBoards();
     void RemBoards();
 };

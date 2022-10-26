@@ -12,7 +12,8 @@ enum class Command {
     NEGATIVE,
     REPLACE_COLOR,
     EXIT,
-    CUT
+    CUT,
+    SCALE
 };
 
 const std::size_t CommandArgsCount[] =
@@ -28,7 +29,9 @@ const std::size_t CommandArgsCount[] =
     //EXIT = 
         0,
     //CAT =
-        4
+        4,
+    //SCALE = 
+        2
 };
 
 const std::map<std::string, Command> COMMANDS_MAP{
@@ -37,7 +40,8 @@ const std::map<std::string, Command> COMMANDS_MAP{
     {"negative", Command::NEGATIVE},
     {"replace_color", Command::REPLACE_COLOR},
     {"exit", Command::EXIT},
-    {"cut", Command::CUT}
+    {"cut", Command::CUT},
+    {"scale", Command::SCALE},
 };
 std::tuple<Command, std::string> Parse(std::string, std::string = "");
 //---------------------------------------------------

@@ -1,5 +1,7 @@
 #include "../SindromPicture/SindromPicture.hpp"
 
+#include <algorithm>
+
 void SindromPicture::ReplaceColor(RGBquad from, RGBquad to) {
     for (std::size_t i = 0; i < storage_.size(); ++i) {
         for (std::size_t j = 0; j < storage_[i].size(); ++j) {
@@ -24,40 +26,100 @@ void SindromPicture::Negative() {
 }
 
 void SindromPicture::AddBoards() {
-    std::vector<std::vector<RGBquad>> new_storage(storage_.size() + 2, std::vector<RGBquad>(storage_.front().size() + 2));
+    std::cerr << SizeX() << " " << SizeY() << std::endl;
 
-    for (std::size_t i = 1; i <= storage_.size(); ++i) {
-        for (std::size_t j = 1; j <= storage_.front().size(); ++j) {
-            new_storage[i][j] = storage_[i-1][j-1];
-        }
-    }
+    PasteRow(SizeY() - 1, SizeY());
+    PasteRow(0, 0);
 
-    for (std::size_t i = 1; i <= storage_.size(); ++i) {
-        new_storage[i][0] = new_storage[i][1];
-        new_storage[i][new_storage[i].size() - 1] = new_storage[i][new_storage[i].size() - 2]; 
-    }
-
-    for (std::size_t j = 1; j <= storage_.front().size(); ++j) {
-        new_storage[0][j] = new_storage[1][j];
-        new_storage[new_storage.size() - 1][j] = new_storage[new_storage.size() - 2][j];
-    }
-
-    new_storage[0][0] = (1ll * new_storage[0][1].Value() + new_storage[1][0].Value()) / 2;
-    new_storage[new_storage.size() - 1][0] = (1ll * new_storage[new_storage.size() - 1][1].Value() + new_storage[new_storage.size() - 2][0].Value()) / 2;
-    new_storage[0][new_storage.front().size() - 1] = (1ll * new_storage[0][new_storage.front().size() - 2].Value() + new_storage[1][new_storage.front().size() - 1].Value()) / 2;
-    new_storage[new_storage.size() - 1][new_storage.front().size() - 1] = (1ll * new_storage[new_storage.size() - 1][new_storage.front().size() - 2].Value() + new_storage[new_storage.size() - 2][new_storage.front().size() - 1].Value()) / 2;
-
-    storage_ = new_storage;
+    PasteColumn(SizeX() - 1, SizeX());
+    PasteColumn(0, 0);
 }
 
 void SindromPicture::RemBoards() {
-    std::vector<std::vector<RGBquad>> new_storage(storage_.size() - 2, std::vector<RGBquad>(storage_.front().size() - 2));
+    DeleteRow(SizeY() - 1);
+    DeleteRow(0);
 
-    for (std::size_t i = 1; i < storage_.size() - 1; ++i) {
-        for (std::size_t j = 1; j < storage_[i].size() - 1; ++j) {
-            new_storage[i-1][j-1] = storage_[i][j];
-        }
+    DeleteColumn(SizeX() - 1);
+    DeleteColumn(0);
+}
+
+void SindromPicture::ScaleX(std::size_t new_x) {
+    if (new_x == 0) {
+        throw std::invalid_argument("new_x == 0");
     }
 
-    storage_ = new_storage;
+    if (new_x < SizeX()) {
+        std::size_t need_delete = SizeX() - new_x;
+        std::size_t delta = SizeX() / need_delete;
+        std::size_t mod = SizeX() % need_delete;
+        std::size_t mod_delta = need_delete / mod + (need_delete % mod * 2 > mod);
+        std::size_t cur_number_del = SizeX() - 1;
+
+
+        std::cerr << mod_delta << std::endl;
+
+        for (std::size_t i = 0; i < need_delete; ++i) {
+            DeleteColumn(cur_number_del);
+
+            cur_number_del -= delta;
+            if (mod > 0 && i % mod_delta == 0) {
+                cur_number_del--;
+                mod--;
+            }
+        }
+    } else {
+        while (SizeX() < new_x) {
+            std::size_t need_to_add = (new_x - SizeX() > SizeX() ? SizeX() : new_x - SizeX());
+            std::size_t delta = SizeX() / need_to_add;
+            std::size_t cur_add_pos = SizeX();
+
+            for (std::size_t i = 0; i < need_to_add; ++i) {
+                PasteColumn(cur_add_pos - 1, cur_add_pos);
+                cur_add_pos -= delta;
+            }
+        }
+    }
+}
+
+void SindromPicture::ScaleY(std::size_t new_y) {
+    if (new_y == 0) {
+        throw std::invalid_argument("new_y == 0");
+    }
+
+    if (new_y < SizeY()) {
+        std::size_t need_delete = SizeY() - new_y;
+        std::size_t delta = SizeY() / need_delete;
+        std::size_t mod = SizeY() % need_delete;
+        std::size_t mod_delta = need_delete / mod + (need_delete % mod * 2 > mod);
+        std::size_t cur_number_del = SizeY() - 1;
+
+
+        std::cerr << mod_delta << std::endl;
+
+        for (std::size_t i = 0; i < need_delete; ++i) {
+            DeleteRow(cur_number_del);
+
+            cur_number_del -= delta;
+            if (mod > 0 && i % mod_delta == 0) {
+                cur_number_del--;
+                mod--;
+            }
+        }
+    } else {
+        while (SizeY() < new_y) {
+            std::size_t need_to_add = (new_y - SizeY() > SizeY() ? SizeY() : new_y - SizeY());
+            std::size_t delta = SizeY() / need_to_add;
+            std::size_t cur_add_pos = SizeY();
+
+            for (std::size_t i = 0; i < need_to_add; ++i) {
+                PasteRow(cur_add_pos - 1, cur_add_pos);
+                cur_add_pos -= delta;
+            }
+        }
+    }
+}
+
+void SindromPicture::Scale(std::size_t new_x, std::size_t new_y) {
+    ScaleX(new_x);
+    ScaleY(new_y);
 }

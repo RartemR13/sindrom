@@ -65,6 +65,9 @@ void Executer::Execute(Command command, std::string args_line) {
         break;
     case Command::EXIT:
         break;
+    case Command::SCALE:
+        Scale(args_line);
+        break;
     }
 }
 
@@ -119,4 +122,18 @@ void Executer::Cut(std::string args_line) {
     }
 
     picture_->SetStorage(picture_->Cut(x, y, dx, dy).GetStorage());
+}
+
+void Executer::Scale(std::string args_line) {
+    if (!picture_) {
+        throw std::runtime_error("Image was not load");
+    }
+
+    std::size_t new_x, new_y;
+    std::stringstream args(args_line);
+    if (!(args >> new_x >> new_y)) {
+        throw std::invalid_argument("Bad args, Scale");
+    }
+
+    picture_->Scale(new_x, new_y);
 }
