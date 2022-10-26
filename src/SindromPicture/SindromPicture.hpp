@@ -19,7 +19,9 @@ public:
     void ScaleY(std::size_t);
 
     void Scale(std::size_t, std::size_t);
+    void UseKoefMatrix(const Matrix<double>& koef_matrix);
     void ImproveDefinition();
+    void Gauss();
 
     void AddBoards();
     void RemBoards();

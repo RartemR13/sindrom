@@ -71,6 +71,9 @@ void Executer::Execute(Command command, std::string args_line) {
     case Command::IMPROVE_DEFINITION:
         ImpoveDefinition();
         break;
+    case Command::GAUSS:
+        Gauss();
+        break;
     }
 }
 
@@ -147,4 +150,12 @@ void Executer::ImpoveDefinition() {
     }
 
     picture_->ImproveDefinition();
+}
+
+void Executer::Gauss() {
+    if (!picture_) {
+        throw std::runtime_error("Image was not load");
+    }
+
+    picture_->Gauss();
 }

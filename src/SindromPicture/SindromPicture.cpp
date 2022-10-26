@@ -120,16 +120,13 @@ Matrix<RGBquad> MakeRGBquadMatrix(const std::vector<Matrix<std::uint8_t>>& to_pa
     return ret;
 }
 
-void SindromPicture::ImproveDefinition() {
-    AddBoards();
+void SindromPicture::UseKoefMatrix(const Matrix<double>& koef_matrix) {
+    for (std::size_t i = 0; i < koef_matrix.SizeY() / 2; ++i) {
+        AddBoards();
+    }
 
     auto chanels_matrixes = MakeChanelsMatrixes<std::int32_t>(*this);
     std::vector<Matrix<std::uint8_t>> result_chanels_matrixes(4);
-
-    Matrix<double> koef_matrix = std::vector<std::vector<double>>
-                                 {{-1, -1, -1},
-                                  {-1, 9, -1},
-                                  {-1, -1, -1}};
 
     for (std::size_t c = 0; c < 4; ++c) {        
         std::vector<std::vector<std::uint8_t>> cur_chanel_res_matrix(SizeY(),std::vector<std::uint8_t>(SizeX()));
@@ -149,5 +146,26 @@ void SindromPicture::ImproveDefinition() {
     }
 
     storage_ = MakeRGBquadMatrix(result_chanels_matrixes).GetStorage();
-    RemBoards();
+
+    for (std::size_t i = 0; i < koef_matrix.SizeY() / 2; ++i) {
+        RemBoards();
+    }
+}
+
+void SindromPicture::ImproveDefinition() {
+    Matrix<double> koef_matrix = std::vector<std::vector<double>>
+                                 {{-1, -1, -1},
+                                  {-1, 9, -1},
+                                  {-1, -1, -1}};
+    UseKoefMatrix(koef_matrix);
+}
+
+void SindromPicture::Gauss() {
+    Matrix<double> koef_matrix = std::vector<std::vector<double>>
+                                 {{0.000789, 0.006581, 0.013347, 0.006581, 0.000789},
+                                  {0.006581, 0.054901, 0.111345, 0.054901, 0.006581},
+                                  {0.013347, 0.111345, 0.255821, 0.111345, 0.013347},
+                                  {0.006581, 0.054901, 0.111345, 0.054901, 0.006581},
+                                  {0.000789, 0.006581, 0.013347, 0.006581, 0.000789}};
+    UseKoefMatrix(koef_matrix);
 }

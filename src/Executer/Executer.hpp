@@ -19,6 +19,7 @@ private:
     void Cut(std::string);
     void Scale(std::string);
     void ImpoveDefinition();
+    void Gauss();
 
 
     CmdArgsParser& args_parser_;
