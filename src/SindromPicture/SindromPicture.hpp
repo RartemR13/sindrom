@@ -25,4 +25,6 @@ public:
 
     void AddBoards();
     void RemBoards();
+
+    void Median();
 };

@@ -169,3 +169,29 @@ void SindromPicture::Gauss() {
                                   {0.000789, 0.006581, 0.013347, 0.006581, 0.000789}};
     UseKoefMatrix(koef_matrix);
 }
+
+void SindromPicture::Median() {
+    AddBoards();
+
+    auto chanels_matrixes = MakeChanelsMatrixes<std::int32_t>(*this);
+    std::vector<Matrix<std::uint8_t>> result_chanels_matrixes(4);
+
+    for (std::size_t c = 0; c < 4; ++c) {
+        std::vector<std::vector<std::uint8_t>> cur_chanel_res_matrix(SizeY(),std::vector<std::uint8_t>(SizeX()));
+
+        for (std::size_t i = 2; i < SizeY(); ++i) {
+            for (std::size_t j = 2; j < SizeX(); ++j) {
+                auto cur_pixels = chanels_matrixes[c].Cut(j - 2, i - 2, 3, 3);
+                auto cur_pixels_dump = cur_pixels.Dump();
+
+                std::sort(cur_pixels_dump.begin(), cur_pixels_dump.end());
+                cur_chanel_res_matrix[i][j] = cur_pixels_dump[5];
+            }
+        }
+
+        result_chanels_matrixes[c] = cur_chanel_res_matrix;
+    }
+
+    storage_ = MakeRGBquadMatrix(result_chanels_matrixes).GetStorage();
+    RemBoards();
+}

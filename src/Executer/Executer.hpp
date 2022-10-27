@@ -20,7 +20,7 @@ private:
     void Scale(std::string);
     void ImpoveDefinition();
     void Gauss();
-
+    void Median();
 
     CmdArgsParser& args_parser_;
     std::optional<SindromPicture> picture_;

@@ -74,6 +74,9 @@ void Executer::Execute(Command command, std::string args_line) {
     case Command::GAUSS:
         Gauss();
         break;
+    case Command::MEDIAN:
+        Median();
+        break;
     }
 }
 
@@ -158,4 +161,12 @@ void Executer::Gauss() {
     }
 
     picture_->Gauss();
+}
+
+void Executer::Median() {
+    if (!picture_) {
+        throw std::runtime_error("Image was not load");
+    }
+
+    picture_->Median();
 }

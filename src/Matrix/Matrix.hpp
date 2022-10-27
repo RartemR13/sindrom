@@ -98,6 +98,19 @@ public:
         Transposition();
     }
 
+    std::vector<T> Dump() {
+        std::vector<T> ret;
+        ret.reserve(SizeY() * SizeX());
+        
+        for (std::size_t i = 0; i < SizeY(); ++i) {
+            for (std::size_t j = 0; j < SizeX(); ++j) {
+                ret.push_back(storage_[i][j]);
+            }
+        }
+
+        return ret;
+    }
+
     template<typename Tf>
     friend Matrix<Tf> CoefMult(const Matrix<Tf>& lhs, const Matrix<Tf>& rhs);
 protected:
