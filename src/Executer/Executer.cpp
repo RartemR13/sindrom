@@ -80,6 +80,9 @@ void Executer::Execute(Command command, std::string args_line) {
     case Command::MAKE_GREY:
         MakeGrey();
         break;
+    case Command::EDGE_DETECTION:
+        EdgeDetection(args_line);
+        break;
     }
 }
 
@@ -180,4 +183,19 @@ void Executer::MakeGrey() {
     }
 
     picture_->MakeGrey();
+}
+
+void Executer::EdgeDetection(std::string args_line) {
+    if (!picture_) {
+        throw std::runtime_error("Image was not load");
+    }
+
+    std::size_t thres_hold;
+    std::stringstream args(args_line);
+
+    if (!(args >> thres_hold) || thres_hold > 255) {
+        throw std::invalid_argument("Bad args, edge_detection thres hold");
+    }
+
+    picture_->EdgeDetection(static_cast<std::uint8_t>(thres_hold));
 }

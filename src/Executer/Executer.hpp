@@ -22,6 +22,7 @@ private:
     void Gauss();
     void Median();
     void MakeGrey();
+    void EdgeDetection(std::string);
 
     CmdArgsParser& args_parser_;
     std::optional<SindromPicture> picture_;

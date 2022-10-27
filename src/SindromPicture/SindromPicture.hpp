@@ -28,4 +28,6 @@ public:
 
     void Median();
     void MakeGrey();
+
+    void EdgeDetection(std::uint8_t thres_hold);
 };

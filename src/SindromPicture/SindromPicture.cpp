@@ -212,3 +212,21 @@ void SindromPicture::MakeGrey() {
         }
     }
 }
+
+void SindromPicture::EdgeDetection(std::uint8_t thres_hold) {
+    MakeGrey();
+
+    Matrix<double> koef_matrix = std::vector<std::vector<double>>
+                                 {{0, -1, 0},
+                                  {-1, 4, -1},
+                                  {0, -1, 0}};
+    UseKoefMatrix(koef_matrix);
+
+    for (std::size_t i = 0; i < SizeY(); ++i) {
+        for (std::size_t j = 0; j < SizeX(); ++j) {
+            for (std::size_t c = 0; c < 4; ++c) {
+                storage_[i][j][c] = (storage_[i][j][c] > thres_hold ? 255 : 0);
+            }
+        }
+    }
+}
