@@ -77,6 +77,9 @@ void Executer::Execute(Command command, std::string args_line) {
     case Command::MEDIAN:
         Median();
         break;
+    case Command::MAKE_GREY:
+        MakeGrey();
+        break;
     }
 }
 
@@ -169,4 +172,12 @@ void Executer::Median() {
     }
 
     picture_->Median();
+}
+
+void Executer::MakeGrey() {
+    if (!picture_) {
+        throw std::runtime_error("Image was not load");
+    }
+
+    picture_->MakeGrey();
 }

@@ -27,4 +27,5 @@ public:
     void RemBoards();
 
     void Median();
+    void MakeGrey();
 };

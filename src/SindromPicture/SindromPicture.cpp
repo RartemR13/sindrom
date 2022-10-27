@@ -195,3 +195,20 @@ void SindromPicture::Median() {
     storage_ = MakeRGBquadMatrix(result_chanels_matrixes).GetStorage();
     RemBoards();
 }
+
+void SindromPicture::MakeGrey() {
+    std::vector<double> chanels_coefs = {0.114, 0.587, 0.299, 1.0};
+
+    for (std::size_t i = 0; i < SizeY(); ++i) {
+        for (std::size_t j = 0; j < SizeX(); ++j) {
+            double cur_pixel_sum = 0;
+            for (std::size_t c = 0; c < 4; ++c) {
+                cur_pixel_sum += storage_[i][j][c] * chanels_coefs[c];
+            }
+
+            for (std::size_t c = 0; c < 4; ++c) {
+                storage_[i][j][c] = static_cast<std::uint8_t>(cur_pixel_sum); 
+            }
+        }
+    }
+}

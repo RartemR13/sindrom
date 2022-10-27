@@ -16,7 +16,8 @@ enum class Command {
     SCALE,
     IMPROVE_DEFINITION,
     GAUSS,
-    MEDIAN
+    MEDIAN,
+    MAKE_GREY
 };
 
 const std::size_t CommandArgsCount[] =
@@ -40,6 +41,8 @@ const std::size_t CommandArgsCount[] =
     //GAUSS =
         0,
     //MEDIAN =
+        0,
+    //MAKE_GREY =
         0
 };
 
@@ -53,7 +56,8 @@ const std::map<std::string, Command> COMMANDS_MAP{
     {"scale", Command::SCALE},
     {"improve_definition", Command::IMPROVE_DEFINITION},
     {"gauss", Command::GAUSS},
-    {"median", Command::MEDIAN}
+    {"median", Command::MEDIAN},
+    {"make_grey", Command::MAKE_GREY}
 };
 std::tuple<Command, std::string> Parse(std::string, std::string = "");
 //---------------------------------------------------

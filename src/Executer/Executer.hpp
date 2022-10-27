@@ -21,6 +21,7 @@ private:
     void ImpoveDefinition();
     void Gauss();
     void Median();
+    void MakeGrey();
 
     CmdArgsParser& args_parser_;
     std::optional<SindromPicture> picture_;
