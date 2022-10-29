@@ -24,7 +24,10 @@ private:
     void MakeGrey();
     void EdgeDetection(std::string);
     void Viniet(std::string);
+    void Undo();
 
     CmdArgsParser& args_parser_;
     std::optional<SindromPicture> picture_;
+
+    std::vector<SindromPicture> story_;
 };

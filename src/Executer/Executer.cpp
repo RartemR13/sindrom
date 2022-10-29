@@ -86,10 +86,17 @@ void Executer::Execute(Command command, std::string args_line) {
     case Command::VINIET:
         Viniet(args_line);
         break;
+    case Command::UNDO:
+        Undo();
+        break;
     }
 }
 
 void Executer::Load(std::string args_line) {
+    if (picture_) {
+        story_.push_back(picture_.value());
+    }
+
     picture_ = SindromPicture(args_line);
 }
 
@@ -109,6 +116,7 @@ void Executer::ReplaceColor(std::string args_line) {
         throw std::invalid_argument("Bad args, replace_color to");
     }
 
+    story_.push_back(picture_.value());
     picture_->ReplaceColor(from, to);
 }
 
@@ -117,6 +125,7 @@ void Executer::Negative() {
         throw std::runtime_error("Image was not load");
     }
 
+    story_.push_back(picture_.value());
     picture_->Negative();
 }
 
@@ -139,6 +148,7 @@ void Executer::Cut(std::string args_line) {
         throw std::invalid_argument("Bad args, Cut");
     }
 
+    story_.push_back(picture_.value());
     picture_->SetStorage(picture_->Cut(x, y, dx, dy).GetStorage());
 }
 
@@ -153,6 +163,7 @@ void Executer::Scale(std::string args_line) {
         throw std::invalid_argument("Bad args, Scale");
     }
 
+    story_.push_back(picture_.value());
     picture_->Scale(new_x, new_y);
 }
 
@@ -161,6 +172,7 @@ void Executer::ImpoveDefinition() {
         throw std::runtime_error("Image was not load");
     }
 
+    story_.push_back(picture_.value());
     picture_->ImproveDefinition();
 }
 
@@ -169,6 +181,7 @@ void Executer::Gauss() {
         throw std::runtime_error("Image was not load");
     }
 
+    story_.push_back(picture_.value());
     picture_->Gauss();
 }
 
@@ -177,6 +190,7 @@ void Executer::Median() {
         throw std::runtime_error("Image was not load");
     }
 
+    story_.push_back(picture_.value());
     picture_->Median();
 }
 
@@ -185,6 +199,7 @@ void Executer::MakeGrey() {
         throw std::runtime_error("Image was not load");
     }
 
+    story_.push_back(picture_.value());
     picture_->MakeGrey();
 }
 
@@ -200,6 +215,7 @@ void Executer::EdgeDetection(std::string args_line) {
         throw std::invalid_argument("Bad args, edge_detection thres hold");
     }
 
+    story_.push_back(picture_.value());
     picture_->EdgeDetection(static_cast<std::uint8_t>(thres_hold));
 }
 
@@ -215,5 +231,15 @@ void Executer::Viniet(std::string args_line) {
         throw std::invalid_argument("Bad args, viniet viniet_koef");
     }
 
+    story_.push_back(picture_.value());
     picture_->Viniet(viniet_koef);
+}
+
+void Executer::Undo() {
+    if (story_.empty()) {
+        return;
+    }
+
+    picture_ = story_.back();
+    story_.pop_back();
 }
