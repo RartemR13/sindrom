@@ -30,4 +30,5 @@ public:
     void MakeGrey();
 
     void EdgeDetection(std::uint8_t thres_hold);
+    void Viniet(std::size_t viniet_koef);
 };

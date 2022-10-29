@@ -23,6 +23,7 @@ private:
     void Median();
     void MakeGrey();
     void EdgeDetection(std::string);
+    void Viniet(std::string);
 
     CmdArgsParser& args_parser_;
     std::optional<SindromPicture> picture_;

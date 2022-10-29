@@ -1,6 +1,7 @@
 #include "../SindromPicture/SindromPicture.hpp"
 
 #include <algorithm>
+#include <cmath>
 
 void SindromPicture::ReplaceColor(RGBquad from, RGBquad to) {
     for (std::size_t i = 0; i < storage_.size(); ++i) {
@@ -226,6 +227,27 @@ void SindromPicture::EdgeDetection(std::uint8_t thres_hold) {
         for (std::size_t j = 0; j < SizeX(); ++j) {
             for (std::size_t c = 0; c < 4; ++c) {
                 storage_[i][j][c] = (storage_[i][j][c] > thres_hold ? 255 : 0);
+            }
+        }
+    }
+}
+
+double PseudoDist(std::int64_t x1, std::int64_t y1, std::int64_t x2, std::int64_t y2) {
+    return std::sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
+}
+
+void SindromPicture::Viniet(std::size_t viniet_koef) {
+    std::size_t centre_X = SizeX() / 2;
+    std::size_t centre_Y = SizeY() / 2;
+
+    for (std::size_t i = 0; i < SizeY(); ++i) {
+        for (std::size_t j = 0; j < SizeX(); ++j) {
+            if (PseudoDist(j, i, centre_X, centre_Y)  / viniet_koef < 1.0) {
+                continue;
+            }
+
+            for (std::size_t c = 0; c < 4; ++c) {
+                storage_[i][j][c] = static_cast<std::uint8_t>(storage_[i][j][c] * (1.0 / (PseudoDist(j, i, centre_X, centre_Y) / viniet_koef)));
             }
         }
     }

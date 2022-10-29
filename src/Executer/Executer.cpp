@@ -83,6 +83,9 @@ void Executer::Execute(Command command, std::string args_line) {
     case Command::EDGE_DETECTION:
         EdgeDetection(args_line);
         break;
+    case Command::VINIET:
+        Viniet(args_line);
+        break;
     }
 }
 
@@ -198,4 +201,19 @@ void Executer::EdgeDetection(std::string args_line) {
     }
 
     picture_->EdgeDetection(static_cast<std::uint8_t>(thres_hold));
+}
+
+void Executer::Viniet(std::string args_line) {
+    if (!picture_) {
+        throw std::runtime_error("Image was not load");
+    }
+
+    std::size_t viniet_koef;
+    std::stringstream args(args_line);
+
+    if (!(args >> viniet_koef)) {
+        throw std::invalid_argument("Bad args, viniet viniet_koef");
+    }
+
+    picture_->Viniet(viniet_koef);
 }
