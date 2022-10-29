@@ -3,15 +3,20 @@
 #include <iostream>
 #include <sstream>
 #include <exception>
+#include <random>
+#include  <iterator>
 
 Executer::Executer(CmdArgsParser& args_parser) :
-    args_parser_(args_parser)
+    args_parser_(args_parser),
+    cur_path_(std::filesystem::current_path())
 {}
 
 void Executer::Start() {
     auto parsed_commands = args_parser_.GetParsedCommands();
     if (parsed_commands.empty()) {
         do {
+            WriteCurPath();
+
             std::string line;
             if (!std::getline(std::cin, line)) {
                 throw std::runtime_error("EOF!");
@@ -88,6 +93,9 @@ void Executer::Execute(Command command, std::string args_line) {
         break;
     case Command::UNDO:
         Undo();
+        break;
+    case Command::LS:
+        Ls();
         break;
     }
 }
@@ -242,4 +250,63 @@ void Executer::Undo() {
 
     picture_ = story_.back();
     story_.pop_back();
+}
+
+void Executer::Ls() {
+    std::cout << "\033[38;2;170;255;0m" << ". .. ";
+    for (auto dir_entry : std::filesystem::directory_iterator(cur_path_)) {
+        if (dir_entry.is_directory()) {
+            std::cout << "\033[38;2;170;255;0m";
+        } else {
+            std::cout << "\033[38;2;0;255;170m";
+        }
+        std::cout << dir_entry.path().filename().string() << " ";
+    }
+    std::cout << "\033[0m";
+    std::cout << std::endl;
+}
+
+const std::vector<std::string> LIFE_STATUS_STRINGS = {
+    "MORE SLEZ UBEITE            ",
+    "A GDE MAMA                  ",
+    "UMER NE RODIVSHIS           ",
+    "ODNA PULA I UEBKA NET       ",
+    "ZXC ZXC ZXC ZXC ZXC         ",
+    "f9 ))))                     ",
+    "KAKOI ZE TI NULEVII         ",
+    "LIVNI IS IGRI PLZ           ",
+    "U TEBA PHOTKA GOVNO         ",
+    "PIANOE UEBISHE              ",
+    "VESHAISA                    ",
+    "TI BEZDAR                   ",
+    "U TEBA NET BUDUSHEGO        ",
+    "U TEBA NICHEGO NE POLUCHITSA",
+    "KAK ZE TI SLAB              ",
+    "TI NE DOSTOIN ZIZNI         ",
+    "POMOISA TI POMOIKA          ",
+    "HAHAHHAHAHHAH UBLUDOK       ",
+    "ZADUSHI SAM SEBA            ",
+    "U TEBA DAZE KROV USHERBNAIA "
+};
+
+template<typename Iter, typename RandomGenerator>
+Iter select_randomly(Iter start, Iter end, RandomGenerator& g) {
+    std::uniform_int_distribution<> dis(0, std::distance(start, end) - 1);
+    std::advance(start, dis(g));
+    return start;
+}
+
+template<typename Iter>
+Iter select_randomly(Iter start, Iter end) {
+    static std::random_device rd;
+    static std::mt19937 gen(rd());
+    return select_randomly(start, end, gen);
+}
+
+void Executer::WriteCurPath() {
+    std::cout << "\033[31m";
+    std::cout << *select_randomly(LIFE_STATUS_STRINGS.begin(), LIFE_STATUS_STRINGS.end()); 
+    std::cout << "\033[32m";
+
+    std::cout << "\033[32m ? \033[01;38;05;222m" << cur_path_.string() << "\033[32m > \033[0m";
 }

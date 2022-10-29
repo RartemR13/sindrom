@@ -1,6 +1,7 @@
 #pragma once
 
 #include <optional>
+#include <filesystem>
 
 #include "../SindromPicture/SindromPicture.hpp"
 #include "../CmdArgsParser/CmdArgsParser.hpp"
@@ -25,9 +26,14 @@ private:
     void EdgeDetection(std::string);
     void Viniet(std::string);
     void Undo();
+    void Ls();
+
+    void WriteCurPath();
 
     CmdArgsParser& args_parser_;
     std::optional<SindromPicture> picture_;
 
     std::vector<SindromPicture> story_;
+
+    std::filesystem::path cur_path_;
 };
