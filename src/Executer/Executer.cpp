@@ -4,7 +4,8 @@
 #include <sstream>
 #include <exception>
 #include <random>
-#include  <iterator>
+#include <iterator>
+#include <set>
 
 Executer::Executer(CmdArgsParser& args_parser) :
     args_parser_(args_parser),
@@ -97,6 +98,12 @@ void Executer::Execute(Command command, std::string args_line) {
     case Command::LS:
         Ls();
         break;
+    case Command::CLEAR:
+        Clear();
+        break;
+    case Command::CD:
+        Cd(args_line);
+        break;
     }
 }
 
@@ -105,7 +112,7 @@ void Executer::Load(std::string args_line) {
         story_.push_back(picture_.value());
     }
 
-    picture_ = SindromPicture(args_line);
+    picture_ = SindromPicture(cur_path_.string() + "/" + args_line);
 }
 
 void Executer::ReplaceColor(std::string args_line) {
@@ -142,7 +149,7 @@ void Executer::Save(std::string args_line) {
         throw std::runtime_error("Image was not load");
     }
 
-    picture_->Save(args_line);
+    picture_->Save(cur_path_.string() + "/" + args_line);
 }
 
 void Executer::Cut(std::string args_line) {
@@ -309,4 +316,33 @@ void Executer::WriteCurPath() {
     std::cout << "\033[32m";
 
     std::cout << "\033[32m ? \033[01;38;05;222m" << cur_path_.string() << "\033[32m > \033[0m";
+}
+
+void Executer::Clear() {
+    std::system("clear");
+}
+
+void Executer::Cd(std::string args_line) {
+    if (args_line == ".") {
+        return;
+    }
+
+    if (args_line == "..") {
+        cur_path_ = cur_path_.parent_path();
+        return;
+    }
+
+    for (auto dir_component : std::filesystem::recursive_directory_iterator(cur_path_)) {
+        if (dir_component.path().string() == cur_path_.string() + "/" + args_line && dir_component.is_directory()) {
+            cur_path_ += "/" + args_line;
+            return;
+        }
+    }
+
+    if (std::filesystem::directory_entry(std::filesystem::path(args_line)).is_directory()) {
+        cur_path_ = std::filesystem::path(args_line);
+        return;
+    }
+
+    throw std::invalid_argument("Incorrect directory " + args_line);
 }

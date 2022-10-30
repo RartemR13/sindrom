@@ -21,7 +21,9 @@ enum class Command {
     EDGE_DETECTION,
     VINIET,
     UNDO,
-    LS
+    LS,
+    CLEAR,
+    CD
 };
 
 const std::size_t CommandArgsCount[] =
@@ -54,8 +56,12 @@ const std::size_t CommandArgsCount[] =
         1,
     //UNDO =
         0,
-    //LS
-        0
+    //LS =
+        0,
+    //CLEAR =
+        0,
+    //CD =
+        1
 };
 
 const std::map<std::string, Command> COMMANDS_MAP{
@@ -73,7 +79,9 @@ const std::map<std::string, Command> COMMANDS_MAP{
     {"edge_detection", Command::EDGE_DETECTION},
     {"viniet", Command::VINIET},
     {"undo", Command::UNDO},
-    {"ls", Command::LS}
+    {"ls", Command::LS},
+    {"clear", Command::CLEAR},
+    {"cd", Command::CD}
 };
 std::tuple<Command, std::string> Parse(std::string, std::string = "");
 //---------------------------------------------------

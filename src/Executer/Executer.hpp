@@ -27,6 +27,8 @@ private:
     void Viniet(std::string);
     void Undo();
     void Ls();
+    void Clear();
+    void Cd(std::string);
 
     void WriteCurPath();
 
