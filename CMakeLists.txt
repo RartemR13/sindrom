@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
 
 project(sindrom)
+set(CMAKE_CXX_STANDARD 17)
 
 add_executable(sindrom src/sindrom.cpp)
 
@@ -19,6 +20,10 @@ target_include_directories(sindrom PUBLIC src/CmdArgsParser)
 add_subdirectory(src/Executer)
 target_link_libraries(sindrom Executer)
 target_include_directories(sindrom PUBLIC src/Executer)
+
+add_subdirectory(submodules/colorcode)
+target_link_libraries(sindrom colorcode)
+target_include_directories(sindrom PUBLIC submodules/colorcode/)
 
 add_custom_command(
     TARGET sindrom

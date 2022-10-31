@@ -7,6 +7,8 @@
 #include <iterator>
 #include <set>
 
+#include "../../submodules/colorcode/colorcode/colorcode.h"
+
 Executer::Executer(CmdArgsParser& args_parser) :
     args_parser_(args_parser),
     cur_path_(std::filesystem::current_path())
@@ -260,40 +262,28 @@ void Executer::Undo() {
 }
 
 void Executer::Ls() {
-    std::cout << "\033[38;2;170;255;0m" << ". .. ";
+    std::cout << colorcode::fore(colorcode::COLOR_BLUE)
+              << ". .. ";
+
     for (auto dir_entry : std::filesystem::directory_iterator(cur_path_)) {
         if (dir_entry.is_directory()) {
-            std::cout << "\033[38;2;170;255;0m";
+            std::cout << colorcode::fore(colorcode::COLOR_BLUE);
+        } else if (dir_entry.path().extension() == ".bmp") {
+            std::cout << colorcode::fore(colorcode::COLOR_MAGENTA);
         } else {
-            std::cout << "\033[38;2;0;255;170m";
+            std::cout << colorcode::fore(colorcode::COLOR_DEFAULT);
         }
         std::cout << dir_entry.path().filename().string() << " ";
     }
-    std::cout << "\033[0m";
+    
+    std::cout << colorcode::fore(colorcode::COLOR_DEFAULT);
     std::cout << std::endl;
 }
 
+
+
 const std::vector<std::string> LIFE_STATUS_STRINGS = {
-    "MORE SLEZ UBEITE            ",
-    "A GDE MAMA                  ",
-    "UMER NE RODIVSHIS           ",
-    "ODNA PULA I UEBKA NET       ",
-    "ZXC ZXC ZXC ZXC ZXC         ",
-    "f9 ))))                     ",
-    "KAKOI ZE TI NULEVII         ",
-    "LIVNI IS IGRI PLZ           ",
-    "U TEBA PHOTKA GOVNO         ",
-    "PIANOE UEBISHE              ",
-    "VESHAISA                    ",
-    "TI BEZDAR                   ",
-    "U TEBA NET BUDUSHEGO        ",
-    "U TEBA NICHEGO NE POLUCHITSA",
-    "KAK ZE TI SLAB              ",
-    "TI NE DOSTOIN ZIZNI         ",
-    "POMOISA TI POMOIKA          ",
-    "HAHAHHAHAHHAH UBLUDOK       ",
-    "ZADUSHI SAM SEBA            ",
-    "U TEBA DAZE KROV USHERBNAIA "
+    #include "BeginPhrases.hpp"
 };
 
 template<typename Iter, typename RandomGenerator>
@@ -311,11 +301,19 @@ Iter select_randomly(Iter start, Iter end) {
 }
 
 void Executer::WriteCurPath() {
-    std::cout << "\033[31m";
-    std::cout << *select_randomly(LIFE_STATUS_STRINGS.begin(), LIFE_STATUS_STRINGS.end()); 
-    std::cout << "\033[32m";
+    std::cout << colorcode::fore(colorcode::COLOR_DARK_RED)
+              << *select_randomly(LIFE_STATUS_STRINGS.begin(), LIFE_STATUS_STRINGS.end())
+        
+              << colorcode::fore(colorcode::COLOR_BLUE) 
+              << " ? "
 
-    std::cout << "\033[32m ? \033[01;38;05;222m" << cur_path_.string() << "\033[32m > \033[0m";
+              << colorcode::fore(colorcode::COLOR_YELLOW) 
+              << cur_path_.string()
+
+              << colorcode::fore(colorcode::COLOR_GREEN)
+              << " > "
+
+              << colorcode::fore(colorcode::COLOR_DEFAULT);
 }
 
 void Executer::Clear() {

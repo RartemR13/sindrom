@@ -1,0 +1,3 @@
+[submodule "submodules/colorcode/colorcode"]
+	path = submodules/colorcode/colorcode
+	url = https://github.com/RogerGee/colorcode
